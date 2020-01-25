@@ -6,11 +6,6 @@ version: "3.7"
 networks:
   traefik_proxy:
     driver: bridge
-    ipam:
-      driver: default
-      config:
-      - subnet: 172.16.238.0/24
-        gateway: 172.16.238.1
   default:
     driver: bridge
 
@@ -51,8 +46,8 @@ services:
       - --certificatesResolvers.dns-cloudflare.acme.storage=/acme.json
       - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.provider=cloudflare
     networks:
-      traefik_proxy:
-        ipv4_address: 172.16.238.254
+      - default
+      - traefik_proxy
     ports:
       - target: 80
         published: 80
