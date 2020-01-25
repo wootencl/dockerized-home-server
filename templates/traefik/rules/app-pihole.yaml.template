@@ -1,0 +1,23 @@
+http:
+  routers:
+    pihole-rtr:
+      entryPoints: ["https"]
+      rule: "Host(`pihole.example.com`)"
+      service: "pihole-svc"
+      middlewares: ["secure-chain", "pihole-add-admin"]
+      tls:
+        certresolver: "dns-cloudflare"
+
+http:
+  middlewares:
+    pihole-add-admin:
+      addPrefix:
+        prefix: "/admin"
+
+http:
+  services:
+    pihole-svc:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          url: http://${PIHOLE_IP}:80

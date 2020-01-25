@@ -1,0 +1,30 @@
+{
+  "name": "dockerized-home-server",
+  "version": "1.0.0",
+  "description": "Dockerized home server setup.",
+  "main": "index.js",
+  "scripts": {
+    "copy-files": "copyfiles -u 1 \"./docker/**/*.*\" ./build",
+    "build": "npm run copy-files",
+    "run": "npm run build && docker-compose -f ./docker/docker-compose.yml up"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wootencl/dockerized-home-server.git"
+  },
+  "author": "Carter Wooten",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wootencl/dockerized-home-server/issues"
+  },
+  "homepage": "https://github.com/wootencl/dockerized-home-server#readme",
+  "dependencies": {
+    "mustache": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "copyfiles": "^2.2.0",
+    "dotenv": "^8.2.0"
+  }
+}
