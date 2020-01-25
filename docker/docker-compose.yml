@@ -161,6 +161,8 @@ services:
       PASSWORD: $PIA_PASSWORD
       DNS_SERVERS: 8.8.8.8, 8.8.4.4
       WEBUI_PORT: 9001
+    cap_add:
+      - NET_ADMIN
     labels:
       - "traefik.enable=true"
       ## HTTP Routers
