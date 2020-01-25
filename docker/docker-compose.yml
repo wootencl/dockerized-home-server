@@ -100,7 +100,7 @@ services:
       - "traefik.http.middlewares.traefik-headers.headers.stspreload=true"
       - "traefik.http.middlewares.traefik-headers.headers.forcestsheader=true"
       - "traefik.http.middlewares.traefik-headers.headers.framedeny=true"
-      - "traefik.http.middlewares.traefik-headers.headers.customFrameOptionsValue='allow-from https:$DOMAIN_NAME'"
+      - "traefik.http.middlewares.traefik-headers.headers.customFrameOptionsValue='allow-from https://$DOMAIN_NAME'"
       - "traefik.http.middlewares.traefik-headers.headers.contenttypenosniff=true"
       - "traefik.http.middlewares.traefik-headers.headers.browserxssfilter=true"
       - "traefik.http.middlewares.traefik-headers.headers.referrerpolicy=same-origin"
@@ -174,7 +174,7 @@ services:
       - "traefik.http.routers.qbit-rtr.tls=true"
       - "traefik.http.routers.qbit-rtr.tls.certresolver=dns-cloudflare"
       ## Middlewares
-      - "traefik.http.routers.qbit-rtr.middlewares=noauth-chain@file"
+      - "traefik.http.routers.qbit-rtr.middlewares=rate-limit@file"
       ## HTTP Services
       - "traefik.http.routers.qbit-rtr.service=qbit-svc"
       - "traefik.http.services.qbit-svc.loadbalancer.server.port=9001"
