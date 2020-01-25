@@ -5,6 +5,7 @@ version: "3.7"
 ###########################
 networks:
   traefik_proxy:
+    name: traefik_proxy
     driver: bridge
   default:
     driver: bridge
