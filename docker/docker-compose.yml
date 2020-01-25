@@ -111,7 +111,7 @@ services:
   # Google OAuth - Single Sign On using OAuth 2.0
   oauth:
     container_name: oauth
-    image: thomseddon/traefik-forward-auth:latest
+    image: lbischof/traefik-forward-auth
     restart: always
     networks:
       - traefik_proxy
