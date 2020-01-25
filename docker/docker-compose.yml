@@ -32,7 +32,7 @@ services:
       - --entryPoints.traefik.address=:8080
       - --api=true
       - --log=true
-      - --log.level=DEBUG, INFO, WARN, ERROR, FATAL, PANIC
+      - --log.level=INFO
       - --accessLog=true
       - --accessLog.filePath=/var/log/docker/traefik.log
       - --accessLog.bufferingSize=100 # Configuring a buffer of 100 lines
@@ -62,7 +62,7 @@ services:
         protocol: tcp
         mode: host
     volumes:
-      - ./traefik/rules:/rules # file provider directory
+      # - ./traefik/rules:/rules # file provider directory
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik/acme/acme.json:/acme.json
       - ./traefik/traefik.log:/var/log/docker/traefik.log
@@ -85,65 +85,60 @@ services:
       - "traefik.http.routers.traefik-rtr.entrypoints=https"
       - "traefik.http.routers.traefik-rtr.tls=true"
       - "traefik.http.routers.traefik-rtr.tls.certresolver=dns-cloudflare"
-      - "traefik.http.routers.traefik-rtr.tls.domains[0].main=${DOMAIN_NAME}"
-      - "traefik.http.routers.traefik-rtr.tls.domains[0].sans=*.${DOMAIN_NAME}"
       ## Middlewares
       # - "traefik.http.routers.traefik-rtr.middlewares=traefik-headers,rate-limit@file,oauth@file"
-      - "traefik.http.middlewares.traefik-headers.headers.accesscontrolallowmethods=GET, OPTIONS, PUT"
-      - "traefik.http.middlewares.traefik-headers.headers.accesscontrolalloworigin=https://${DOMAIN_NAME}"
-      - "traefik.http.middlewares.traefik-headers.headers.accesscontrolmaxage=100"
-      - "traefik.http.middlewares.traefik-headers.headers.addvaryheader=true"
-      - "traefik.http.middlewares.traefik-headers.headers.allowedhosts=${DOMAIN_NAME}"
-      - "traefik.http.middlewares.traefik-headers.headers.hostsproxyheaders=X-Forwarded-Host"
-      - "traefik.http.middlewares.traefik-headers.headers.sslredirect=true"
-      - "traefik.http.middlewares.traefik-headers.headers.sslhost=${DOMAIN_NAME}"
-      - "traefik.http.middlewares.traefik-headers.headers.sslforcehost=true"
-      - "traefik.http.middlewares.traefik-headers.headers.sslproxyheaders.X-Forwarded-Proto=https"
-      - "traefik.http.middlewares.traefik-headers.headers.stsseconds=63072000"
-      - "traefik.http.middlewares.traefik-headers.headers.stsincludesubdomains=true"
-      - "traefik.http.middlewares.traefik-headers.headers.stspreload=true"
-      - "traefik.http.middlewares.traefik-headers.headers.forcestsheader=true"
-      - "traefik.http.middlewares.traefik-headers.headers.framedeny=true"
-      - "traefik.http.middlewares.traefik-headers.headers.customFrameOptionsValue='allow-from https://${DOMAIN_NAME}'"
-      - "traefik.http.middlewares.traefik-headers.headers.contenttypenosniff=true"
-      - "traefik.http.middlewares.traefik-headers.headers.browserxssfilter=true"
-      - "traefik.http.middlewares.traefik-headers.headers.referrerpolicy=same-origin"
-      - "traefik.http.middlewares.traefik-headers.headers.featurepolicy=camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';"
-      - "traefik.http.middlewares.traefik-headers.headers.customresponseheaders.X-Robots-Tag=none,noarchive,nosnippet,notranslate,noimageindex,"
-      ## Services - API
-      - "traefik.http.routers.traefik-rtr.service=api@internal"
-
+      # - "traefik.http.middlewares.traefik-headers.headers.accesscontrolallowmethods=GET, OPTIONS, PUT"
+      # - "traefik.http.middlewares.traefik-headers.headers.accesscontrolalloworigin=https://${DOMAIN_NAME}"
+      # - "traefik.http.middlewares.traefik-headers.headers.accesscontrolmaxage=100"
+      # - "traefik.http.middlewares.traefik-headers.headers.addvaryheader=true"
+      # - "traefik.http.middlewares.traefik-headers.headers.allowedhosts=${DOMAIN_NAME}"
+      # - "traefik.http.middlewares.traefik-headers.headers.hostsproxyheaders=X-Forwarded-Host"
+      # - "traefik.http.middlewares.traefik-headers.headers.sslredirect=true"
+      # - "traefik.http.middlewares.traefik-headers.headers.sslhost=${DOMAIN_NAME}"
+      # - "traefik.http.middlewares.traefik-headers.headers.sslforcehost=true"
+      # - "traefik.http.middlewares.traefik-headers.headers.sslproxyheaders.X-Forwarded-Proto=https"
+      # - "traefik.http.middlewares.traefik-headers.headers.stsseconds=63072000"
+      # - "traefik.http.middlewares.traefik-headers.headers.stsincludesubdomains=true"
+      # - "traefik.http.middlewares.traefik-headers.headers.stspreload=true"
+      # - "traefik.http.middlewares.traefik-headers.headers.forcestsheader=true"
+      # - "traefik.http.middlewares.traefik-headers.headers.framedeny=true"
+      # - "traefik.http.middlewares.traefik-headers.headers.customFrameOptionsValue='allow-from https://${DOMAIN_NAME}'"
+      # - "traefik.http.middlewares.traefik-headers.headers.contenttypenosniff=true"
+      # - "traefik.http.middlewares.traefik-headers.headers.browserxssfilter=true"
+      # - "traefik.http.middlewares.traefik-headers.headers.referrerpolicy=same-origin"
+      # - "traefik.http.middlewares.traefik-headers.headers.featurepolicy=camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';"
+      # - "traefik.http.middlewares.traefik-headers.headers.customresponseheaders.X-Robots-Tag=none,noarchive,nosnippet,notranslate,noimageindex,"
   # Google OAuth - Single Sign On using OAuth 2.0
-  oauth:
-    container_name: oauth
-    image: lbischof/traefik-forward-auth
-    restart: always
-    networks:
-      - traefik_proxy
-    environment:
-      - CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
-      - SECRET=${OAUTH_SECRET}
-      - COOKIE_DOMAIN=${DOMAIN_NAME}
-      - INSECURE_COOKIE=false
-      - AUTH_HOST=oauth.${DOMAIN_NAME}
-      - URL_PATH=/_oauth
-      - WHITELIST=${MY_EMAIL}
-      - LOG_LEVEL=info
-      - LOG_FORMAT=text
-      - LIFETIME=2592000 # 30 days
-    labels:
-      - "traefik.enable=true"
-      ## HTTP Routers
-      - "traefik.http.routers.oauth-rtr.entrypoints=https"
-      - "traefik.http.routers.oauth-rtr.rule=Host(`oauth.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.oauth-rtr.tls=true"
-      - "traefik.http.routers.oauth-rtr.tls.certresolver=dns-cloudflare"
-      ## Middlewares
-      - "traefik.http.routers.oauth-rtr.middlewares=secure-chain@file"
-      ## HTTP Services
-      - "traefik.http.routers.oauth-rtr.service=oauth-svc"
-      - "traefik.http.services.oauth-svc.loadbalancer.server.port=${OAUTH_PORT}"
+  # oauth:
+  #   container_name: oauth
+  #   image: lbischof/traefik-forward-auth
+  #   restart: always
+  #   networks:
+  #     - traefik_proxy
+  #   environment:
+  #     - CLIENT_ID=${GOOGLE_CLIENT_ID}
+  #     - CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+  #     - SECRET=${OAUTH_SECRET}
+  #     - COOKIE_DOMAIN=${DOMAIN_NAME}
+  #     - INSECURE_COOKIE=false
+  #     - AUTH_HOST=oauth.${DOMAIN_NAME}
+  #     - URL_PATH=/_oauth
+  #     - WHITELIST=${MY_EMAIL}
+  #     - LOG_LEVEL=info
+  #     - LOG_FORMAT=text
+  #     - LIFETIME=2592000 # 30 days
+  #   labels:
+  #     - "traefik.enable=true"
+  #     ## HTTP Routers
+  #     - "traefik.http.routers.oauth-rtr.entrypoints=https"
+  #     - "traefik.http.routers.oauth-rtr.rule=Host(`oauth.${DOMAIN_NAME}`)"
+  #     - "traefik.http.routers.oauth-rtr.tls=true"
+  #     - "traefik.http.routers.oauth-rtr.tls.certresolver=dns-cloudflare"
+  #     ## Middlewares
+  #     - "traefik.http.routers.oauth-rtr.middlewares=secure-chain@file"
+  #     ## HTTP Services
+  #     - "traefik.http.routers.oauth-rtr.service=oauth-svc"
+  #     - "traefik.http.services.oauth-svc.loadbalancer.server.port=${OAUTH_PORT}"
 
   ########################### 
   #   DOWNLOADER
