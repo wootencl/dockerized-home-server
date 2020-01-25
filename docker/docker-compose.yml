@@ -38,12 +38,11 @@ services:
       - --accessLog.bufferingSize=100 # Configuring a buffer of 100 lines
       - --accessLog.filters.statusCodes=400-499
       - --providers.docker=true
-      - --providers.docker.defaultrule=Host(`{{ index .Labels "com.docker.compose.service" }}.$DOMAIN_NAME`)
       - --providers.docker.exposedByDefault=false
       - --providers.docker.network=traefik_proxy
       - --providers.docker.swarmMode=false
       - --providers.file.directory=/rules # Load dynamic configuration from one or more .toml or .yml files in a directory.
-      - --certificatesResolvers.dns-cloudflare.acme.email=$CLOUDFLARE_EMAIL
+      - --certificatesResolvers.dns-cloudflare.acme.email=${CLOUDFLARE_EMAIL}
       - --certificatesResolvers.dns-cloudflare.acme.storage=/acme.json
       - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.provider=cloudflare
     networks:
@@ -68,8 +67,8 @@ services:
       - ./traefik/acme/acme.json:/acme.json
       - ./traefik/traefik.log:/var/log/docker/traefik.log
     environment:
-      - CF_API_EMAIL=$CLOUDFLARE_EMAIL
-      - CF_API_KEY=$CLOUDFLARE_API_KEY
+      - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
+      - CF_API_KEY=${CLOUDFLARE_API_KEY}
     labels:
       - "traefik.enable=true"
       # HTTP-to-HTTPS Redirect
@@ -81,18 +80,18 @@ services:
       - "traefik.http.routers.traefik-rtr.entrypoints=https"
       - "traefik.http.routers.traefik-rtr.tls=true"
       - "traefik.http.routers.traefik-rtr.tls.certresolver=dns-cloudflare"
-      - "traefik.http.routers.traefik-rtr.tls.domains[0].main=$DOMAIN_NAME"
-      - "traefik.http.routers.traefik-rtr.tls.domains[0].sans=*.$DOMAIN_NAME"
+      - "traefik.http.routers.traefik-rtr.tls.domains[0].main=${DOMAIN_NAME}"
+      - "traefik.http.routers.traefik-rtr.tls.domains[0].sans=*.${DOMAIN_NAME}"
       ## Middlewares
-      - "traefik.http.routers.traefik-rtr.middlewares=traefik-headers,rate-limit@file,oauth@file"
+      # - "traefik.http.routers.traefik-rtr.middlewares=traefik-headers,rate-limit@file,oauth@file"
       - "traefik.http.middlewares.traefik-headers.headers.accesscontrolallowmethods=GET, OPTIONS, PUT"
-      - "traefik.http.middlewares.traefik-headers.headers.accesscontrolalloworigin=https://$DOMAIN_NAME"
+      - "traefik.http.middlewares.traefik-headers.headers.accesscontrolalloworigin=https://${DOMAIN_NAME}"
       - "traefik.http.middlewares.traefik-headers.headers.accesscontrolmaxage=100"
       - "traefik.http.middlewares.traefik-headers.headers.addvaryheader=true"
-      - "traefik.http.middlewares.traefik-headers.headers.allowedhosts=$DOMAIN_NAME"
+      - "traefik.http.middlewares.traefik-headers.headers.allowedhosts=${DOMAIN_NAME}"
       - "traefik.http.middlewares.traefik-headers.headers.hostsproxyheaders=X-Forwarded-Host"
       - "traefik.http.middlewares.traefik-headers.headers.sslredirect=true"
-      - "traefik.http.middlewares.traefik-headers.headers.sslhost=$DOMAIN_NAME"
+      - "traefik.http.middlewares.traefik-headers.headers.sslhost=${DOMAIN_NAME}"
       - "traefik.http.middlewares.traefik-headers.headers.sslforcehost=true"
       - "traefik.http.middlewares.traefik-headers.headers.sslproxyheaders.X-Forwarded-Proto=https"
       - "traefik.http.middlewares.traefik-headers.headers.stsseconds=63072000"
@@ -100,7 +99,7 @@ services:
       - "traefik.http.middlewares.traefik-headers.headers.stspreload=true"
       - "traefik.http.middlewares.traefik-headers.headers.forcestsheader=true"
       - "traefik.http.middlewares.traefik-headers.headers.framedeny=true"
-      - "traefik.http.middlewares.traefik-headers.headers.customFrameOptionsValue='allow-from https://$DOMAIN_NAME'"
+      - "traefik.http.middlewares.traefik-headers.headers.customFrameOptionsValue='allow-from https://${DOMAIN_NAME}'"
       - "traefik.http.middlewares.traefik-headers.headers.contenttypenosniff=true"
       - "traefik.http.middlewares.traefik-headers.headers.browserxssfilter=true"
       - "traefik.http.middlewares.traefik-headers.headers.referrerpolicy=same-origin"
@@ -117,14 +116,14 @@ services:
     networks:
       - traefik_proxy
     environment:
-      - CLIENT_ID=$GOOGLE_CLIENT_ID
-      - CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
-      - SECRET=$OAUTH_SECRET
-      - COOKIE_DOMAIN=$DOMAIN_NAME
+      - CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - SECRET=${OAUTH_SECRET}
+      - COOKIE_DOMAIN=${DOMAIN_NAME}
       - INSECURE_COOKIE=false
-      - AUTH_HOST=oauth.$DOMAIN_NAME
+      - AUTH_HOST=oauth.${DOMAIN_NAME}
       - URL_PATH=/_oauth
-      - WHITELIST=$MY_EMAIL
+      - WHITELIST=${MY_EMAIL}
       - LOG_LEVEL=info
       - LOG_FORMAT=text
       - LIFETIME=2592000 # 30 days
@@ -132,14 +131,14 @@ services:
       - "traefik.enable=true"
       ## HTTP Routers
       - "traefik.http.routers.oauth-rtr.entrypoints=https"
-      - "traefik.http.routers.oauth-rtr.rule=Host(`oauth.$DOMAIN_NAME`)"
+      - "traefik.http.routers.oauth-rtr.rule=Host(`oauth.${DOMAIN_NAME}`)"
       - "traefik.http.routers.oauth-rtr.tls=true"
       - "traefik.http.routers.oauth-rtr.tls.certresolver=dns-cloudflare"
       ## Middlewares
       - "traefik.http.routers.oauth-rtr.middlewares=secure-chain@file"
       ## HTTP Services
       - "traefik.http.routers.oauth-rtr.service=oauth-svc"
-      - "traefik.http.services.oauth-svc.loadbalancer.server.port=$OAUTH_PORT"
+      - "traefik.http.services.oauth-svc.loadbalancer.server.port=${OAUTH_PORT}"
 
   ########################### 
   #   DOWNLOADER
@@ -154,12 +153,12 @@ services:
       - traefik_proxy
       - default
     volumes:
-      - $DOWNLOADS_DIRECTORY:/downloads
+      - ${DOWNLOADS_DIRECTORY}:/downloads
     environment:
       REGION: US East
       PROTOCOL: tcp
-      USER: $PIA_USER
-      PASSWORD: $PIA_PASSWORD
+      USER: ${PIA_USER}
+      PASSWORD: ${PIA_PASSWORD}
       DNS_SERVERS: 8.8.8.8, 8.8.4.4
       WEBUI_PORT: 9001
     cap_add:
@@ -168,7 +167,7 @@ services:
       - "traefik.enable=true"
       ## HTTP Routers
       - "traefik.http.routers.qbit-rtr.entrypoints=https"
-      - "traefik.http.routers.qbit-rtr.rule=Host(`$DOMAIN_NAME`) && PathPrefix(`/qbit`)"
+      - "traefik.http.routers.qbit-rtr.rule=Host(`${DOMAIN_NAME}`) && PathPrefix(`/qbit`)"
       - "traefik.http.routers.qbit-rtr.middlewares=qbit-rtr-stripprefix"
       - "traefik.http.middlewares.qbit-rtr-stripprefix.stripprefix.prefixes=/qbit"
       - "traefik.http.routers.qbit-rtr.tls=true"
