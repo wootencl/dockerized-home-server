@@ -10,19 +10,25 @@ http:
     traefik:
       tls:
         certResolver: dns-cloudflare
-        domains:
-          - main: "carterwooten.com"
-            sans:
-              - "*.snitest.com"
+      service: traefik
     test-app:
       tls:
         certResolver: dns-cloudflare
+      service: test-app
 
   services:
     noop:
       loadBalancer:
         servers:
           - url: 'http://127.0.0.1'
+    traefik:
+      loadBalancer:
+        servers:
+          port: 8080
+    test-app:
+      loadBalancer:
+        servers:
+          port: 80
 
   middlewares:
     https_redirect:
