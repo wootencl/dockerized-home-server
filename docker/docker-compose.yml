@@ -44,6 +44,6 @@ services:
       - "traefik.http.routers.traefik.rule=Host(`pi.carterwooten.com`)"
   
   test-app:
-    image: containous/whoami:v1.3.0
+    image: containous/whoami
     labels:
       - "traefik.http.routers.test-app.rule=Host(`pi.carterwooten.com`) && Path(`/test`)"
