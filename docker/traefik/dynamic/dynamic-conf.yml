@@ -13,6 +13,9 @@ http:
         domains:
           main: carterwooten.com
           sans: "*.carterwooten.com"
+    test-app:
+      tls:
+        certResolver: dns-cloudflare
 
   services:
     noop:
