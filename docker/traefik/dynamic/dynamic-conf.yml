@@ -13,12 +13,19 @@ http:
       tls:
         certResolver: dns-cloudflare
       service: traefik
+      domains:
+        main: carterwooten.com
+        sans: "*.carterwooten.com"
     test-app:
       entryPoints:
         - https
       tls:
         certResolver: dns-cloudflare
       service: test-app
+      domains:
+        main: carterwooten.com
+        sans: "*.carterwooten.com"
+      
 
   services:
     noop:

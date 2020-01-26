@@ -24,7 +24,7 @@ certificatesResolvers:
   dns-cloudflare:
     acme:
       email: cw@carterwooten.com
-      storage: acme.json
+      storage: /acme.json
       dnsChallenge:
         provider: cloudflare
 
