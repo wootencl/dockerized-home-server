@@ -1,0 +1,44 @@
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: true
+
+log:
+  level: INFO
+
+accessLog:
+  filePath: "/var/log/docker/traefik.log"
+  bufferingSize: 100
+  filters:
+    statusCodes: 
+      - "400-499"
+
+entryPoints:
+  http:
+    address: :80
+  https:
+    address: :443
+  traefik:
+    address: :8080
+
+certificatesResolvers:
+  dns-cloudflare:
+    acme:
+      email: cw@carterwooten.com
+      storage: acme.json
+      dnsChallenge:
+        provider: cloudflare
+
+providers:
+  file:
+    filename: "/etc/traefik/dynamic"
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: traefik_proxy
+
+api:
+  # TODO: make this secure later
+  insecure: true
+  dashboard: true
+ping:
+  entryPoint: http
