@@ -11,8 +11,9 @@ http:
       tls:
         certResolver: dns-cloudflare
         domains:
-          main: carterwooten.com
-          sans: "*.carterwooten.com"
+          - main: "carterwooten.com"
+            sans:
+              - "*.snitest.com"
     test-app:
       tls:
         certResolver: dns-cloudflare
