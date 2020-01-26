@@ -30,7 +30,7 @@ certificatesResolvers:
 
 providers:
   file:
-    filename: "/etc/traefik/dynamic"
+    directory: "/etc/traefik/dynamic"
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
