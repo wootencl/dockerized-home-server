@@ -8,10 +8,14 @@ http:
       rule: "HostRegexp(`{any:.+}`)"
       service: noop
     traefik:
+      entryPoints:
+        - https
       tls:
         certResolver: dns-cloudflare
       service: traefik
     test-app:
+      entryPoints:
+        - https
       tls:
         certResolver: dns-cloudflare
       service: test-app
