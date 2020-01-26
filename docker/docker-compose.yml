@@ -42,7 +42,6 @@ services:
       - CF_API_KEY=${CLOUDFLARE_API_KEY}
     labels:
       - "traefik.http.routers.traefik.rule=Host(`pi.carterwooten.com`)"
-      - "traefik.http.services.my-app.loadbalancer.server.port=8080"
   
   test-app:
     image: containous/whoami
@@ -50,4 +49,3 @@ services:
       - --port=8082
     labels:
       - "traefik.http.routers.test-app.rule=Host(`pi.carterwooten.com`) && Path(`/test`)"
-      - "traefik.http.services.test-app.loadbalancer.server.port=8082"

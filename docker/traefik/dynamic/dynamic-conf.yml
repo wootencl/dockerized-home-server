@@ -25,8 +25,14 @@ http:
       loadBalancer:
         servers:
           - url: 'http://127.0.0.1'
-    traefik: {}
-    test-app: {}
+    traefik: 
+      loadBalancer:
+        servers:
+          - url: 'http://127.0.0.1:8080'
+    test-app:
+      loadBalancer:
+        servers:
+          - url: 'http://127.0.0.1:8082'
 
   middlewares:
     https_redirect:
