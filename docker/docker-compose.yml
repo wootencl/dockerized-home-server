@@ -83,9 +83,11 @@ services:
       - "traefik.http.middlewares.https_redirect.redirectscheme.permanent=true"
       # HTTP Routers
       - "traefik.http.routers.traefik-rtr.entrypoints=https"
+      - "traefik.http.routers.traefik-secure.rule=Host(`pi.${DOMAIN_NAME}`)"
       - "traefik.http.routers.traefik-rtr.tls=true"
       - "traefik.http.routers.traefik-rtr.tls.certresolver=dns-cloudflare"
       - "traefik.http.routers.traefik-rtr.tls.domains[0].main=${DOMAIN_NAME}"
+      - "traefik.http.routers.traefik-rtr.tls.domains[0].sans=*.${DOMAIN_NAME}"
       ## Middlewares
       - "traefik.http.routers.traefik-rtr.middlewares=traefik-headers,rate-limit@file,oauth@file"
       - "traefik.http.middlewares.traefik-headers.headers.accesscontrolallowmethods=GET, OPTIONS, PUT"
