@@ -20,6 +20,12 @@ http:
       tls:
         certResolver: dns-cloudflare
       service: test-app@docker
+  
+  services:
+      noop:
+        loadBalancer:
+          servers:
+            - url: "http://127.0.0.1"
 
   middlewares:
     https_redirect:

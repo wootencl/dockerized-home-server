@@ -40,6 +40,8 @@ services:
     environment:
       - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
       - CF_API_KEY=${CLOUDFLARE_API_KEY}
+    labels:
+      - "traefik.enable=true"
   
   test-app:
     image: containous/whoami
@@ -47,3 +49,5 @@ services:
       - traefik_proxy
     command:
       - --port=8082
+    labels:
+      - "traefik.enable=true"
