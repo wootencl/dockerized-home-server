@@ -42,6 +42,7 @@ services:
       - CF_API_KEY=${CLOUDFLARE_API_KEY}
     labels:
       - "traefik.enable=true"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
   
   test-app:
     image: containous/whoami
@@ -51,3 +52,4 @@ services:
       - --port=8082
     labels:
       - "traefik.enable=true"
+      - "traefik.http.services.test-app.loadbalancer.server.port=8082"
