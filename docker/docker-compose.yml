@@ -40,12 +40,10 @@ services:
     environment:
       - CF_API_EMAIL=${CLOUDFLARE_EMAIL}
       - CF_API_KEY=${CLOUDFLARE_API_KEY}
-    labels:
-      - "traefik.http.routers.traefik.rule=Host(`pi.carterwooten.com`)"
   
   test-app:
     image: containous/whoami
+    networks:
+      - traefik_proxy
     command:
       - --port=8082
-    labels:
-      - "traefik.http.routers.test-app.rule=Host(`pi.carterwooten.com`) && Path(`/test`)"

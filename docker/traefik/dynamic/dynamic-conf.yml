@@ -8,31 +8,18 @@ http:
       rule: "HostRegexp(`{any:.+}`)"
       service: noop
     traefik:
+      rule: "Host(`pi.carterwooten.com`)"
       entryPoints:
         - https
       tls:
         certResolver: dns-cloudflare
-      service: traefik
+      service: traefik@docker
     test-app:
       entryPoints:
         - https
       tls:
         certResolver: dns-cloudflare
-      service: test-app
-
-  services:
-    noop:
-      loadBalancer:
-        servers:
-          - url: 'http://127.0.0.1'
-    traefik: 
-      loadBalancer:
-        servers:
-          - url: 'http://127.0.0.1:8080'
-    test-app:
-      loadBalancer:
-        servers:
-          - url: 'http://127.0.0.1:8082'
+      service: test-app@docker
 
   middlewares:
     https_redirect:
