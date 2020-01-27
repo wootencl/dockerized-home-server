@@ -13,8 +13,9 @@ http:
         - https
       tls:
         certResolver: dns-cloudflare
-      service: traefik@docker
+      service: api@internal
     test-app:
+      rule: "Host(`pi.carterwooten.com`) && Path(`/test`)"
       entryPoints:
         - https
       tls:
