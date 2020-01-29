@@ -36,5 +36,6 @@ providers:
 
 api:
   dashboard: true
+  
 ping:
   entryPoint: http

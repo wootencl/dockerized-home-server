@@ -21,8 +21,8 @@ services:
 
   # Traefik - Reverse Proxy
   traefik:
-    container_name: traefik
     image: traefik:v2.0
+    container_name: traefik
     restart: always
     networks:
       - default
@@ -44,24 +44,24 @@ services:
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
   
   # qBittorrent - Torrent downloader
-  qbittorrent:
-    image: wootencl/pia-qbit
-    container_name: qbit
-    restart: always
-    networks:
-      - default
-      - traefik_proxy
-    volumes:
-      - ${DOWNLOADS_DIRECTORY}:/downloads
-    environment:
-      REGION: US East
-      PROTOCOL: tcp
-      USER: ${PIA_USER}
-      PASSWORD: ${PIA_PASSWORD}
-      DNS_SERVERS: 8.8.8.8, 8.8.4.4
-      WEBUI_PORT: 8080
-    cap_add:
-      - NET_ADMIN
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.qbit.loadbalancer.server.port=8080"
+  # qbittorrent:
+  #   image: wootencl/pia-qbit
+  #   container_name: qbit
+  #   restart: always
+  #   networks:
+  #     - default
+  #     - traefik_proxy
+  #   volumes:
+  #     - ${DOWNLOADS_DIRECTORY}:/downloads
+  #   environment:
+  #     REGION: US East
+  #     PROTOCOL: tcp
+  #     USER: ${PIA_USER}
+  #     PASSWORD: ${PIA_PASSWORD}
+  #     DNS_SERVERS: 8.8.8.8, 8.8.4.4
+  #     WEBUI_PORT: 8080
+  #   cap_add:
+  #     - NET_ADMIN
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.services.qbit.loadbalancer.server.port=8080"
