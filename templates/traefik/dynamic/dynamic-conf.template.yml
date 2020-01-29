@@ -21,6 +21,8 @@ http:
       tls:
         certResolver: dns-cloudflare
       service: qbit@docker
+      middlewares: 
+        - "prefix-stripper"
   
   middlewares:
     prefix-stripper:
