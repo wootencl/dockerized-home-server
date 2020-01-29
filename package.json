@@ -4,11 +4,16 @@
   "description": "Dockerized home server setup.",
   "main": "index.js",
   "scripts": {
-    "copy-files": "copyfiles -u 1 \"docker/**/*.*\" build/docker",
     "acme-file-permissions": "chmod 600 build/traefik/acme/acme.json",
+    "copy-docker": "copyfiles -u 1 \"docker/**/*.*\" build/docker",
+    "copy-traefik": "copyfiles -u 1 \"traefik/**/*.*\" build/traefik && npm run acme-file-permissions",
+    "copy-files": "npm run copy-docker && npm run copy-traefik",
+    "clean": "del build",
     "build-scripts": "babel \"scripts\" --out-dir \"build/scripts\"",
-    "build": "npm run copy-files && npm run acme-file-permissions",
-    "up": "npm run build && docker-compose -f build/docker-compose.yml up"
+    "generate-files-from-templates": "node build/scripts/generate_files_from_templates.js",
+    "build": "npm run clean && npm run build-scripts && npm run generate-files-from-templates && npm run copy-files",
+    "up": "docker-compose -f build/docker-compose.yml up",
+    "start": "npm run build && npm run up"
   },
   "repository": {
     "type": "git",
@@ -22,6 +27,7 @@
   "homepage": "https://github.com/wootencl/dockerized-home-server#readme",
   "dependencies": {
     "@babel/runtime": "^7.8.3",
+    "del-cli": "^3.0.0",
     "mustache": "^4.0.0"
   },
   "devDependencies": {
