@@ -3,7 +3,7 @@ global:
   sendAnonymousUsage: true
 
 log:
-  level: INFO
+  level: DEBUG
 
 accessLog:
   filePath: "/var/log/docker/traefik.log"

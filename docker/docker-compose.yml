@@ -51,6 +51,8 @@ services:
     networks:
       - default
       - traefik_proxy
+    ports:
+      - "9000:9000"
     volumes:
       - ${DOWNLOADS_DIRECTORY}:/downloads
     environment:

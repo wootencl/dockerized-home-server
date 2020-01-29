@@ -23,14 +23,6 @@ http:
       service: qbit@docker
       middlewares: 
         - "prefix-stripper"
-  
-  middlewares:
-    prefix-stripper:
-      stripPrefix:
-        prefixes:
-          - '/qbit'
-        forceSlash: false
-
 
   services:
       noop:
@@ -43,3 +35,8 @@ http:
       redirectScheme:
         scheme: https
         permanent: true
+    prefix-stripper:
+      stripPrefix:
+        prefixes:
+          - '/qbit'
+        forceSlash: false
