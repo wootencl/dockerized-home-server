@@ -15,13 +15,21 @@ http:
         certResolver: dns-cloudflare
       service: api@internal
     qbit:
-      rule: "Host(`${DOMAIN}`) && Path(`/qbit`)"
+      rule: "Host(`${DOMAIN}`) && PathPrefix(`/qbit`)"
       entryPoints:
         - https
       tls:
         certResolver: dns-cloudflare
       service: qbit@docker
   
+  middlewares:
+    prefix-stripper:
+      stripPrefix:
+        prefixes:
+          - '/qbit'
+        forceSlash: false
+
+
   services:
       noop:
         loadBalancer:
