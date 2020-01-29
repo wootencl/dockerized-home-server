@@ -12,7 +12,7 @@
     "build-scripts": "babel \"scripts\" --out-dir \"build/scripts\"",
     "generate-files-from-templates": "node build/scripts/generate_files_from_templates.js",
     "build": "npm run clean && npm run build-scripts && npm run generate-files-from-templates && npm run copy-files",
-    "up": "docker-compose -f build/docker-compose.yml up",
+    "up": "docker-compose -f build/docker/docker-compose.yml up",
     "start": "npm run build && npm run up"
   },
   "repository": {
