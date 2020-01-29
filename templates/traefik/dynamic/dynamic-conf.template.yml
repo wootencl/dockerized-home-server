@@ -14,13 +14,13 @@ http:
       tls:
         certResolver: dns-cloudflare
       service: api@internal
-    test-app:
-      rule: "Host(`${DOMAIN}`) && Path(`/test`)"
+    qbit:
+      rule: "Host(`${DOMAIN}`) && Path(`/qbit`)"
       entryPoints:
         - https
       tls:
         certResolver: dns-cloudflare
-      service: test-app@docker
+      service: qbit@docker
   
   services:
       noop:
