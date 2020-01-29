@@ -4,8 +4,9 @@
   "description": "Dockerized home server setup.",
   "main": "index.js",
   "scripts": {
-    "copy-files": "copyfiles -u 1 \"docker/**/*.*\" build && copyfiles \".env\" build",
+    "copy-files": "copyfiles -u 1 \"docker/**/*.*\" build/docker",
     "acme-file-permissions": "chmod 600 build/traefik/acme/acme.json",
+    "build-scripts": "babel \"scripts\" --out-dir \"build/scripts\"",
     "build": "npm run copy-files && npm run acme-file-permissions",
     "up": "npm run build && docker-compose -f build/docker-compose.yml up"
   },
@@ -20,12 +21,19 @@
   },
   "homepage": "https://github.com/wootencl/dockerized-home-server#readme",
   "dependencies": {
+    "@babel/runtime": "^7.8.3",
     "mustache": "^4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",
     "@babel/core": "^7.8.3",
+    "@babel/plugin-proposal-export-default-from": "^7.8.3",
+    "@babel/plugin-proposal-export-namespace-from": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
     "copyfiles": "^2.2.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "fs-extra": "^8.1.0",
+    "recursive-readdir": "^2.2.2"
   }
 }

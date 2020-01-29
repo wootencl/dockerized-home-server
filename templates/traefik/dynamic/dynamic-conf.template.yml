@@ -8,14 +8,14 @@ http:
       rule: "HostRegexp(`{any:.+}`)"
       service: noop
     traefik:
-      rule: "Host(`pi.carterwooten.com`)"
+      rule: "Host(`${DOMAIN}`)"
       entryPoints:
         - https
       tls:
         certResolver: dns-cloudflare
       service: api@internal
     test-app:
-      rule: "Host(`pi.carterwooten.com`) && Path(`/test`)"
+      rule: "Host(`${DOMAIN}`) && Path(`/test`)"
       entryPoints:
         - https
       tls:

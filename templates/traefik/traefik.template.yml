@@ -17,13 +17,11 @@ entryPoints:
     address: :80
   https:
     address: :443
-  traefik:
-    address: :8080
 
 certificatesResolvers:
   dns-cloudflare:
     acme:
-      email: cw@carterwooten.com
+      email: ${EMAIL}
       storage: /acme.json
       dnsChallenge:
         provider: cloudflare
@@ -37,8 +35,6 @@ providers:
     network: traefik_proxy
 
 api:
-  # TODO: make this secure later
-  insecure: true
   dashboard: true
 ping:
   entryPoint: http

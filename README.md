@@ -18,5 +18,5 @@ For the most part everything in this repository has been dockerized. With that, 
 
     nvm use && npm i
 
-This will first change your systems node version to what the project currently uses (v8) and then install the needed node modules.
+This will first change your systems node version to what the project currently uses (v10) and then install the needed node modules.
 

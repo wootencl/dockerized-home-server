@@ -30,7 +30,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik/acme/acme.json:/acme.json
@@ -44,12 +43,25 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
   
-  test-app:
-    image: containous/whoami
+  # qBittorrent - Torrent downloader
+  qbittorrent:
+    image: wootencl/pia-qbit
+    container_name: qbit
+    restart: always
     networks:
+      - default
       - traefik_proxy
-    command:
-      - --port=8082
+    volumes:
+      - ${DOWNLOADS_DIRECTORY}:/downloads
+    environment:
+      REGION: US East
+      PROTOCOL: tcp
+      USER: ${PIA_USER}
+      PASSWORD: ${PIA_PASSWORD}
+      DNS_SERVERS: 8.8.8.8, 8.8.4.4
+      WEBUI_PORT: 8080
+    cap_add:
+      - NET_ADMIN
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.test-app.loadbalancer.server.port=8082"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
