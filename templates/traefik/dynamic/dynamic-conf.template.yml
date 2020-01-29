@@ -12,17 +12,18 @@ http:
       entryPoints:
         - https
       tls:
-        certResolver: dns-cloudflare
+        certResolver: dns_cloudflare
       service: api@internal
     qbit:
       rule: "Host(`${DOMAIN}`) && PathPrefix(`/qbit`)"
       entryPoints:
         - https
       tls:
-        certResolver: dns-cloudflare
+        certResolver: dns_cloudflare
       service: qbit@docker
       middlewares: 
-        - "prefix-stripper"
+        - "prefix_stripper"
+        - "qb_headers"
 
   services:
       noop:
@@ -35,8 +36,15 @@ http:
       redirectScheme:
         scheme: https
         permanent: true
-    prefix-stripper:
+    prefix_stripper:
       stripPrefix:
         prefixes:
           - '/qbit'
         forceSlash: false
+    qb_headers:
+      headers:
+        customRequestHeaders:
+          X-Frame-Options: "SAMEORIGIN"
+          Referer: ""
+          Origin: ""
+      

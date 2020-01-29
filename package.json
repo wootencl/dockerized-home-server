@@ -13,9 +13,9 @@
     "build-scripts": "babel \"scripts\" --out-dir \"build/scripts\"",
     "generate-files-from-templates": "node build/scripts/generate_files_from_templates.js",
     "build": "npm run clean && npm run build-scripts && npm run generate-files-from-templates && npm run copy-files",
-    "up": "docker-compose -d -f build/docker/docker-compose.yml up",
-    "down": "docker-compose -f build/docker/docker-compose.yml down",
-    "start": "npm run build && npm run up",
+    "docker-up": "docker-compose -f build/docker/docker-compose.yml up -d",
+    "docker-down": "docker-compose -f build/docker/docker-compose.yml down",
+    "start": "npm run build && npm run docker-up",
     "docker-logs": "docker-compose -f build/docker/docker-compose.yml logs"
   },
   "repository": {

@@ -19,7 +19,7 @@ entryPoints:
     address: :443
 
 certificatesResolvers:
-  dns-cloudflare:
+  dns_cloudflare:
     acme:
       email: ${EMAIL}
       storage: /acme.json

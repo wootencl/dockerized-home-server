@@ -52,7 +52,7 @@ services:
       - default
       - traefik_proxy
     ports:
-      - "9000:9000"
+      - "9001:9001"
     volumes:
       - ${DOWNLOADS_DIRECTORY}:/downloads
     environment:
@@ -61,9 +61,10 @@ services:
       USER: ${PIA_USER}
       PASSWORD: ${PIA_PASSWORD}
       DNS_SERVERS: 8.8.8.8, 8.8.4.4
-      WEBUI_PORT: 9000
+      WEBUI_PORT: 8080
     cap_add:
       - NET_ADMIN
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.qbit.loadbalancer.server.port=9000"
+      - "traefik.http.services.qbit.loadbalancer.server.port=9001"
+      - "traefik.http.services.qbit.loadbalancer.passhostheader=false"
