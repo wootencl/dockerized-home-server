@@ -43,4 +43,4 @@ http:
     qbit_redirect:
       redirectRegex:
         regex: "^(.*)/qbit$$"
-        replacement: "$$1/qbit/
+        replacement: "$$1/qbit/"
