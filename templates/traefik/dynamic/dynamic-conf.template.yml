@@ -22,8 +22,7 @@ http:
         certResolver: dns_cloudflare
       service: qbit@docker
       middlewares: 
-        - "prefix_stripper"
-        - "qbit_redirect"
+        - "prefix_chain"
 
   services:
       noop:
@@ -32,6 +31,11 @@ http:
             - url: "http://127.0.0.1"
 
   middlewares:
+    prefix_chain:
+      chain:
+        middlewares:
+          - append_slash_redirect
+          - strip_prefix
     https_redirect:
       redirectScheme:
         scheme: https
