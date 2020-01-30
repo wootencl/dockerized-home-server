@@ -21,7 +21,7 @@ services:
 
   # Traefik - Reverse Proxy
   traefik:
-    image: traefik:v2.1.3
+    image: traefik:v2.0
     container_name: traefik
     restart: always
     networks:
@@ -59,7 +59,7 @@ services:
       USER: ${PIA_USER}
       PASSWORD: ${PIA_PASSWORD}
       DNS_SERVERS: 8.8.8.8, 8.8.4.4
-      WEBUI_PORT: 8080
+      WEBUI_PORT: 9001
     cap_add:
       - NET_ADMIN
     labels:

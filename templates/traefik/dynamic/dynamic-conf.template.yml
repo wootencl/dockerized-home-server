@@ -43,11 +43,7 @@ http:
         forceSlash: false
     qb_headers:
       headers:
-        sslRedirect: true
-        browserXSSFilter: true
-        sslHost: ${DOMAIN}
-        customFrameOptionsValue: 
-        customRequestHeaders: "allow-from https:${DOMAIN}""
+        customRequestHeaders:
           X-Frame-Options: "SAMEORIGIN"
           Referer: ""
           Origin: ""
