@@ -49,7 +49,6 @@ services:
     container_name: qbit
     restart: always
     networks:
-      - default
       - traefik_proxy
     volumes:
       - ${DOWNLOADS_DIRECTORY}:/downloads
