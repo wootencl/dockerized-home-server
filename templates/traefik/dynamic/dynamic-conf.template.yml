@@ -23,7 +23,7 @@ http:
       service: qbit@docker
       middlewares: 
         - "prefix_stripper"
-        - "qbit_headers"
+        - "qbit_redirect"
 
   services:
       noop:
@@ -40,10 +40,7 @@ http:
       stripPrefix:
         prefixes:
           - '/qbit'
-    qbit_headers:
-      headers:
-        customRequestHeaders:
-          X-Frame-Options: "SAMEORIGIN"
-          Referer: ""
-          Origin: ""
-      
+    qbit_redirect:
+      redirectRegex:
+        regex: "^(.*)/qbit$$"
+        replacement: "$$1/qbit/
