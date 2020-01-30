@@ -23,7 +23,7 @@ http:
       service: qbit@docker
       middlewares: 
         - "prefix_stripper"
-        - "qb_headers"
+        - "qbit_headers"
 
   services:
       noop:
@@ -40,8 +40,7 @@ http:
       stripPrefix:
         prefixes:
           - '/qbit'
-        forceSlash: false
-    qb_headers:
+    qbit_headers:
       headers:
         customRequestHeaders:
           X-Frame-Options: "SAMEORIGIN"
