@@ -49,6 +49,7 @@ services:
     container_name: qbit
     restart: always
     networks:
+      - default
       - traefik_proxy
     volumes:
       - ${DOWNLOADS_DIRECTORY}:/downloads
@@ -64,4 +65,3 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.qbit.loadbalancer.server.port=9001"
-      - "traefik.http.services.qbit.loadbalancer.passhostheader=false"
