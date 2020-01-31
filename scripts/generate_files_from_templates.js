@@ -16,8 +16,6 @@ const TEMPLATES_DIRECTORY = `${ROOT_DIRECTORY}/templates`;
 const DOT_ENV_FILE = `${ROOT_DIRECTORY}/.env`;
 
 const IGNORED_FILES = ['**/.DS_Store'];
-const CUSTOM_DELIMITER = ['${', '}']
-
 
 async function generateFilesFromTemplates() {
   // Load up `.env` variables
@@ -28,7 +26,7 @@ async function generateFilesFromTemplates() {
   const templatePaths = await recursiveReaddir(TEMPLATES_DIRECTORY, IGNORED_FILES);
   for (let i = 0; i < templatePaths.length; i++) {
     const template = await readFile(templatePaths[i], 'utf8');
-    const rendered = render(template, process.env, {}, CUSTOM_DELIMITER);
+    const rendered = render(template, process.env, {});
     await outputFile(
       templatePaths[i]
         .replace('templates', 'build')

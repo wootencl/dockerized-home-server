@@ -64,3 +64,4 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.qbit.loadbalancer.server.port=9001"
+      - "traefik.http.services.qb.loadbalancer.passhostheader=false"
