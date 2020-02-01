@@ -8,7 +8,7 @@ http:
       rule: "HostRegexp(`{any:.+}`)"
       service: noop
     traefik:
-      rule: "Host(traefik.`{{DOMAIN}}`)"
+      rule: "Host(`traefik.{{DOMAIN}}`)"
       entryPoints:
         - https
       tls:
@@ -25,7 +25,7 @@ http:
       service: qbit@docker
 
     plex:
-      rule: "Host(plex.`{{DOMAIN}}`)"
+      rule: "Host(`plex.{{DOMAIN}}`)"
       entryPoints:
         - https
       service: plex@docker
