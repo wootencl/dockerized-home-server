@@ -32,7 +32,8 @@ http:
         certResolver: dns_cloudflare
       service: plex@docker
       middlewares: 
-        - "prefix_chain"
+        - "append_slash_redirect"
+        - "plex_rewrite"
 
   services:
       noop:
@@ -59,5 +60,9 @@ http:
       stripPrefixRegex:
         regex:
           - "/[a-z0-9_]+"
+    plex_rewrite:
+      replacePathRegex:
+        regex: "^/plex/(.*)"
+        replacement: "/web/$1"
 
     
