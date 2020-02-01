@@ -87,4 +87,4 @@ services:
       - /media/home-server-storage/tv-shows:/tv
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.plex.loadbalancer.server.port=9001"
+      - "traefik.http.services.plex.loadbalancer.server.port=32400"
