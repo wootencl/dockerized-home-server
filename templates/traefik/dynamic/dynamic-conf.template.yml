@@ -24,6 +24,16 @@ http:
       middlewares: 
         - "prefix_chain"
 
+    plex:
+      rule: "Host(`{{DOMAIN}}`) && PathPrefix(`/plex`)"
+      entryPoints:
+        - https
+      tls:
+        certResolver: dns_cloudflare
+      service: plex@docker
+      middlewares: 
+        - "prefix_chain"
+
   services:
       noop:
         loadBalancer:

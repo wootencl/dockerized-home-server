@@ -23,7 +23,7 @@ services:
   traefik:
     image: traefik:v2.1.3
     container_name: traefik
-    restart: always
+    restart: unless-stopped
     networks:
       - default
       - traefik_proxy
@@ -47,7 +47,7 @@ services:
   qbittorrent:
     image: wootencl/pia-qbit
     container_name: qbit
-    restart: always
+    restart: unless-stopped
     networks:
       - traefik_proxy
     volumes:
@@ -64,4 +64,27 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.qbit.loadbalancer.server.port=9001"
-      - "traefik.http.services.qb.loadbalancer.passhostheader=false"
+
+  # Plex - Media Server
+  plex:
+    image: linuxserver/plex
+    container_name: plex
+    restart: unless-stopped
+    networks:
+      - traefik_proxy
+    ports:
+      - 32400:32400
+      - 32400:32400/udp
+      - 32469:32469
+      - 32469:32469/udp
+      - 5353:5353/udp
+      - 1900:1900/udp
+    environment:
+      - VERSION=docker
+    volumes:
+      - /media/home-server-storage/plex:/config
+      - /media/home-server-storage/movies:/movies
+      - /media/home-server-storage/tv-shows:/tv
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.plex.loadbalancer.server.port=9001"
