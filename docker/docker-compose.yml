@@ -73,17 +73,18 @@ services:
     networks:
       - traefik_proxy
     ports:
-      - 32400:32400
-      - 32400:32400/udp
-      - 32469:32469
-      - 32469:32469/udp
-      - 1900:1900/udp
+      - "32400:32400"
+      - "32400:32400/udp"
+      - "32469:32469"
+      - "32469:32469/udp"
+      - "1900:1900/udp"
     environment:
       - VERSION=docker
+      - PLEX_CLAIM=${PLEX_CLAIM}
     volumes:
-      - /media/home-server-storage/plex:/config
-      - /media/home-server-storage/movies:/movies
-      - /media/home-server-storage/tv-shows:/tv
+      - ${MEDIA_DIRECTORY}/plex:/config
+      - ${MEDIA_DIRECTORY}/movies:/movies
+      - ${MEDIA_DIRECTORY}/tv-shows:/tv
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.plex.loadbalancer.server.port=32400"
