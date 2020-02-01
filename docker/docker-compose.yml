@@ -52,6 +52,7 @@ services:
       - traefik_proxy
     volumes:
       - ${DOWNLOADS_DIRECTORY}:/downloads
+      - qbit-config:/config
     environment:
       REGION: US East
       PROTOCOL: tcp
@@ -88,3 +89,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.plex.loadbalancer.server.port=32400"
+
+volumes:
+  qbit-config:

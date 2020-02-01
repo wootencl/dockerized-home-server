@@ -23,12 +23,16 @@ http:
       entryPoints:
         - https
       service: qbit@docker
+      tls:
+        certResolver: dns_cloudflare
 
     plex:
       rule: "Host(`plex.{{DOMAIN}}`)"
       entryPoints:
         - https
       service: plex@docker
+      tls:
+        certResolver: dns_cloudflare
 
   services:
       noop:
