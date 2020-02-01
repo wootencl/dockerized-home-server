@@ -25,7 +25,7 @@ http:
         - "prefix_chain"
 
     plex:
-      rule: "Host(`{{DOMAIN}}`) && PathPrefix(`/plex`)"
+      rule: "Host(`{{DOMAIN}}`) && (PathPrefix(`/plex`) || PathPrefix(`/web`)"
       entryPoints:
         - https
       tls:
