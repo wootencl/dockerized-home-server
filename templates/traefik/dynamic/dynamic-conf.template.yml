@@ -8,24 +8,22 @@ http:
       rule: "HostRegexp(`{any:.+}`)"
       service: noop
     traefik:
-      rule: "Host(`{{DOMAIN}}`)"
+      rule: "Host(traefik.`{{DOMAIN}}`)"
       entryPoints:
         - https
       tls:
         certResolver: dns_cloudflare
       service: api@internal
     qbit:
-      rule: "Host(`{{DOMAIN}}`) && PathPrefix(`/qbit`)"
+      rule: "Host(`qbit.{{DOMAIN}}`)"
       entryPoints:
         - https
       tls:
         certResolver: dns_cloudflare
       service: qbit@docker
-      middlewares: 
-        - "prefix_chain"
 
     plex:
-      rule: "Host(`{{DOMAIN}}`) && (PathPrefix(`/web`) || PathPrefix(`/media`))"
+      rule: "Host(plex.`{{DOMAIN}}`)"
       entryPoints:
         - https
       tls:
@@ -39,23 +37,9 @@ http:
             - url: "http://127.0.0.1"
 
   middlewares:
-    prefix_chain:
-      chain:
-        middlewares:
-          - append_slash_redirect
-          - strip_prefix
     https_redirect:
       redirectScheme:
         scheme: https
         permanent: true
-    append_slash_redirect:
-      redirectRegex:
-        regex: "^(https?://[^/]+/[a-z0-9_]+)$"
-        replacement: "${1}/"
-        permanent: true
-    strip_prefix:
-      stripPrefixRegex:
-        regex:
-          - "/(.*?)/"
 
     
