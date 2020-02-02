@@ -21,7 +21,7 @@ services:
 
   # Traefik - Reverse Proxy
   traefik:
-    image: traefik:v2.1.3
+    image: traefik
     container_name: traefik
     restart: unless-stopped
     networks:
@@ -83,12 +83,37 @@ services:
       - VERSION=docker
       - PLEX_CLAIM=${PLEX_CLAIM}
     volumes:
-      - ${MEDIA_DIRECTORY}/plex:/config
-      - ${MEDIA_DIRECTORY}/movies:/movies
-      - ${MEDIA_DIRECTORY}/tv-shows:/tv
+      - plex-config:/config
+      - ${MEDIA_DIRECTORY}/Movies:/movies
+      - ${MEDIA_DIRECTORY}/TV Shows:/tv
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.plex.loadbalancer.server.port=32400"
+  
+  heimdall:
+    image: linuxserver/heimdall
+    container_name: heimdall
+    restart: unless-stopped
+    networks:
+      - traefik_proxy
+    environment:
+      - TZ=America/New_York
+    volumes:
+      - heimdall-config:/config
+    ports:
+      - 9002:443
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.plex.loadbalancer.server.port=9002"
+  
+  filebot:
+    image: phrontizo/filebot-rpi
+    container_name: filebot
+    environment: 
+      - INPUT_DIR=${DOWNLOADED_MEDIA_DIRECTORY}
+      - OUTPUT_DIR=${MEDIA_DIRECTORY}
 
 volumes:
   qbit-config:
+  plex-config:
+  heimdall-config:

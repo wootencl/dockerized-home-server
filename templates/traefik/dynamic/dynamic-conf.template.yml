@@ -7,6 +7,7 @@ http:
         - https_redirect
       rule: "HostRegexp(`{any:.+}`)"
       service: noop
+      
     traefik:
       rule: "Host(`traefik.{{DOMAIN}}`)"
       entryPoints:
@@ -18,6 +19,7 @@ http:
             sans:
               - "*.{{DOMAIN}}"
       service: api@internal
+
     qbit:
       rule: "Host(`qbit.{{DOMAIN}}`)"
       entryPoints:
@@ -31,6 +33,14 @@ http:
       entryPoints:
         - https
       service: plex@docker
+      tls:
+        certResolver: dns_cloudflare
+      
+    heimdall:
+      rule: "Host(`{{DOMAIN}}`)"
+      entryPoints:
+        - https
+      service: heimdall@docker
       tls:
         certResolver: dns_cloudflare
 
