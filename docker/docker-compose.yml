@@ -104,7 +104,7 @@ services:
       - 9002:443
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.plex.loadbalancer.server.port=9002"
+      - "traefik.http.services.heimdall.loadbalancer.server.port=9002"
   
   filebot:
     image: phrontizo/filebot-rpi
