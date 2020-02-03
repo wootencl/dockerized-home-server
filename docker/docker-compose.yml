@@ -97,6 +97,8 @@ services:
     networks:
       - traefik_proxy
     environment:
+      - PUID=1000
+      - PGID=1000
       - TZ=America/New_York
     volumes:
       - heimdall-config:/config
@@ -111,7 +113,8 @@ services:
     container_name: filebot
     environment: 
       - INPUT_DIR=${DOWNLOADED_MEDIA_DIRECTORY}
-      - OUTPUT_DIR=${MEDIA_DIRECTORY}
+    volumes:
+      - ${MEDIA_DIRECTORY}:/media
 
 volumes:
   qbit-config:
