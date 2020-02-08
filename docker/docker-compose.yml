@@ -74,11 +74,7 @@ services:
     networks:
       - traefik_proxy
     ports:
-      - "32400:32400"
-      - "32400:32400/udp"
-      - "32469:32469"
-      - "32469:32469/udp"
-      - "1900:1900/udp"
+      - "9002:32400"
     environment:
       - VERSION=docker
       - PLEX_CLAIM=${PLEX_CLAIM}
@@ -88,29 +84,46 @@ services:
       - ${MEDIA_DIRECTORY}/TV Shows:/tv
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.plex.loadbalancer.server.port=32400"
+      - "traefik.http.services.plex.loadbalancer.server.port=9002"
   
-  heimdall:
-    image: linuxserver/heimdall
-    container_name: heimdall
+  # heimdall:
+  #   image: linuxserver/heimdall
+  #   container_name: heimdall
+  #   restart: unless-stopped
+  #   networks:
+  #     - traefik_proxy
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=America/New_York
+  #   volumes:
+  #     - heimdall-config:/config
+  #     - filebot-data:/data
+  #   ports:
+  #     - 9002:443
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.services.heimdall.loadbalancer.server.port=9002"
+
+  portainer:
+    image: portainer/portainer
+    command: -p 9004
+    container_name: portainer
     restart: unless-stopped
     networks:
       - traefik_proxy
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/New_York
     volumes:
-      - heimdall-config:/config
-    ports:
-      - 9002:443
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer-data:/data
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.heimdall.loadbalancer.server.port=9002"
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.plex.loadbalancer.server.port=9004"
   
   filebot:
     image: phrontizo/filebot-rpi
     container_name: filebot
+    restart: unless-stopped
     environment: 
       - INPUT_DIR=${DOWNLOADED_MEDIA_DIRECTORY}
     volumes:
@@ -120,3 +133,5 @@ volumes:
   qbit-config:
   plex-config:
   heimdall-config:
+  filebot-data:
+  portainer-data:
