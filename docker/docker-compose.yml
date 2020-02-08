@@ -116,9 +116,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - portainer-data:/data
     labels:
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.services.plex.loadbalancer.server.port=9004"
+      - "traefik.enable=true"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9004"
   
   filebot:
     image: phrontizo/filebot-rpi
