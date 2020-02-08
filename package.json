@@ -13,10 +13,10 @@
     "build-scripts": "babel \"scripts\" --out-dir \"build/scripts\"",
     "generate-files-from-templates": "node build/scripts/generate_files_from_templates.js",
     "build": "npm run clean && npm run build-scripts && npm run generate-files-from-templates && npm run copy-files",
-    "docker-up": "docker-compose -f build/docker/docker-compose.yml up -d",
-    "docker-stop": "docker-compose -f build/docker/docker-compose.yml stop",
+    "docker:up": "docker-compose -f build/docker/docker-compose.yml up -d",
+    "docker:stop": "docker-compose -f build/docker/docker-compose.yml stop",
     "start": "npm run build && npm run docker-up",
-    "docker-logs": "docker-compose -f build/docker/docker-compose.yml logs"
+    "docker:logs": "docker-compose -f build/docker/docker-compose.yml logs"
   },
   "repository": {
     "type": "git",

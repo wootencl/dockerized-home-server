@@ -74,7 +74,11 @@ services:
     networks:
       - traefik_proxy
     ports:
-      - "9002:32400"
+      - "32400:32400"
+      - "32400:32400/udp"
+      - "32469:32469"
+      - "32469:32469/udp"
+      - "1900:1900/udp"
     environment:
       - VERSION=docker
       - PLEX_CLAIM=${PLEX_CLAIM}
@@ -86,28 +90,28 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.plex.loadbalancer.server.port=9002"
   
-  # heimdall:
-  #   image: linuxserver/heimdall
-  #   container_name: heimdall
-  #   restart: unless-stopped
-  #   networks:
-  #     - traefik_proxy
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=America/New_York
-  #   volumes:
-  #     - heimdall-config:/config
-  #     - filebot-data:/data
-  #   ports:
-  #     - 9002:443
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.services.heimdall.loadbalancer.server.port=9002"
+  heimdall:
+    image: linuxserver/heimdall
+    container_name: heimdall
+    restart: unless-stopped
+    networks:
+      - traefik_proxy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - heimdall-config:/config
+      - filebot-data:/data
+    ports:
+      - 9002:443
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.heimdall.loadbalancer.server.port=9002"
 
   portainer:
     image: portainer/portainer
-    command: -p 9004
+    command: -p 0.0.0.0:9004
     container_name: portainer
     restart: unless-stopped
     networks:
