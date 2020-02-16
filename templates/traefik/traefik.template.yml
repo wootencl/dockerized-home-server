@@ -5,6 +5,9 @@ global:
 log:
   level: DEBUG
 
+serversTransport:
+  insecureSkipVerify: true
+
 accessLog:
   filePath: "/var/log/docker/traefik.log"
   bufferingSize: 100

@@ -102,7 +102,6 @@ services:
       - TZ=America/New_York
     volumes:
       - heimdall-config:/config
-      - filebot-data:/data
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.heimdall.loadbalancer.server.port=443"
