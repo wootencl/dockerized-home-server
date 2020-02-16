@@ -105,6 +105,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.heimdall.loadbalancer.server.port=443"
+      - "traefik.http.services.heimdall.loadbalancer.server.scheme=https"
 
   portainer:
     image: portainer/portainer
