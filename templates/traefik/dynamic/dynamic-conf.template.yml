@@ -36,19 +36,19 @@ http:
       tls:
         certResolver: dns_cloudflare
       
-    # heimdall:
-    #   rule: "Host(`{{DOMAIN}}`)"
-    #   entryPoints:
-    #     - https
-    #   service: heimdall@docker
-    #   tls:
-    #     certResolver: dns_cloudflare
+    heimdall:
+      rule: "Host(`{{DOMAIN}}`)"
+      entryPoints:
+        - https
+      service: heimdall@docker
+      tls:
+        certResolver: dns_cloudflare
       
     portainer:
       rule: "Host(`portainer.{{DOMAIN}}`)"
       entryPoints:
         - https
-      service: plex@docker
+      service: portainer@docker
       tls:
         certResolver: dns_cloudflare
 
