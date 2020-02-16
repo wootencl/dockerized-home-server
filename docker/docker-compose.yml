@@ -78,17 +78,17 @@ services:
       - "32400:32400/udp"
       - "32469:32469"
       - "32469:32469/udp"
+      - "53530:5353/udp"
       - "1900:1900/udp"
     environment:
       - VERSION=docker
-      - PLEX_CLAIM=${PLEX_CLAIM}
     volumes:
       - plex-config:/config
       - ${MEDIA_DIRECTORY}/Movies:/movies
       - ${MEDIA_DIRECTORY}/TV Shows:/tv
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.plex.loadbalancer.server.port=9002"
+      - "traefik.http.services.plex.loadbalancer.server.port=32400"
   
   heimdall:
     image: linuxserver/heimdall
@@ -103,15 +103,12 @@ services:
     volumes:
       - heimdall-config:/config
       - filebot-data:/data
-    ports:
-      - 9002:443
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.heimdall.loadbalancer.server.port=9002"
+      - "traefik.http.services.heimdall.loadbalancer.server.port=443"
 
   portainer:
     image: portainer/portainer
-    command: -p 0.0.0.0:9004
     container_name: portainer
     restart: unless-stopped
     networks:
@@ -121,7 +118,7 @@ services:
       - portainer-data:/data
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.portainer.loadbalancer.server.port=9004"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
   
   filebot:
     image: phrontizo/filebot-rpi
